@@ -1,0 +1,7 @@
+config {
+  type: "declaration",
+  database: "pool101",
+  schema: "dbo",
+  name: "customers",
+  description: "raw customers table"
+}

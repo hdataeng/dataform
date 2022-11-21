@@ -1,0 +1,42 @@
+config {
+  type: "table",
+  schema: "dbo",
+  tags: ["daily"],
+  dependencies: [ "stg_customers","stg_sales_orders" ],
+  // sqldatawarehouse : {
+  //  distribution : "CLUSTERED COLUMNSTORE INDEX ORDER(customer_id) with (DROP_EXISTING = ON)"
+  // },
+  description: "Combine both customers and sales in USD",
+  columns:{
+           customer_id: "Id of customer",
+           clicked_items: "checks number on an item"
+         },
+  assertions: {
+    uniqueKey: ["customer_id"],
+    nonNull: ["item_id", "customer_id"],
+    rowConditions: [
+
+      'units_purchased > 0'
+	  ]
+  }
+}
+
+select
+  sales.customer_id,
+  item_id,
+  customers.customer_name,
+  tax_id,
+  state,
+  city,
+  units_purchased,
+  product_id,
+  product_currency,
+  product_quantity,
+  order_date,
+  order_number
+from
+${ref("stg_sales_orders")} sales
+
+left join ${ref("stg_customers")} customers
+
+on customers.customer_id = sales.customer_id

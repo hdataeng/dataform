@@ -1,0 +1,6 @@
+{
+    "warehouse": "sqldatawarehouse",
+    "defaultSchema": "dataform",
+    "assertionSchema": "dataform_assertions",
+    "useRunCache": false
+}

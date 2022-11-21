@@ -1,0 +1,32 @@
+config {
+  type: "view",
+  schema: "staging",
+  description: "Cleaned version of pool101.customers"
+}
+
+select
+  cast(customer_id as int) customer_id
+  ,cast(tax_id as INT) as tax_id
+  ,tax_code
+  ,cast(customer_name as varchar(200)) as customer_name
+  ,cast(state as varchar(200)) as state
+  ,cast(city as varchar(200)) as city
+  ,case when postcode like '%.%' 
+  then cast(left(postcode,5) as int)
+  else cast(postcode as int)
+  end as postcode
+  ,street
+  ,case when number like '%.%' 
+  then cast(left(number,3) as int)
+  else number end as number
+  ,unit
+  ,region
+  ,district
+  ,cast(lon as float) as longitude
+  ,cast(lat as float) as laltitude
+  ,ship_to_address
+  ,valid_from as valid_from_date
+  ,valid_to as valid_to_date
+  ,cast(units_purchased as float) as units_purchased
+from
+  ${ref("customers")}
